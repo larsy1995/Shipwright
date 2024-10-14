@@ -282,6 +282,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
         OUTPUT_NAME "soh-macos"
     )
+    find_library(COREFOUNDATION_FRAMEWORK CoreFoundation)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${COREFOUNDATION_FRAMEWORK}
+)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "soh.elf"
