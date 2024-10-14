@@ -111,6 +111,8 @@ jobs:
         brew uninstall --ignore-dependencies libpng
         sudo port install $(cat .github/workflows/macports-deps.txt)
         brew install ninja
+    - name: Print environment variables before build
+      run: printenv
     - name: Download soh.otr
       uses: actions/download-artifact@v4
       with:
@@ -119,6 +121,8 @@ jobs:
       run: |
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release --parallel 10
+    - name: Print environment variables after build
+      run: printenv
         mv soh.otr build-cmake/soh
         (cd build-cmake && cpack)
 
