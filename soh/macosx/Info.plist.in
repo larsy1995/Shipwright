@@ -37,8 +37,8 @@
     <dict>
         <key>SHIP_HOME</key>
         <string>~/Library/Application Support/com.shipofharkinian.soh</string>
-	<key>DYLD_LIBRARY_PATH</key>
-    	<string>/usr/local/lib</string>
+        <key>DYLD_LIBRARY_PATH</key>
+        <string>@executable_path/../Frameworks</string>
     </dict>
     <key>LSArchitecturePriority</key>
     <array>
