@@ -26,7 +26,6 @@ if (CPACK_GENERATOR MATCHES "Bundle")
     set(CPACK_BUNDLE_ICON "macosx/soh.icns")
     set(CPACK_BUNDLE_STARTUP_COMMAND "soh/soh-macos")
     set(CPACK_BUNDLE_APPLE_CERT_APP "-")
-
 endif()
 if (CPACK_GENERATOR MATCHES "Bundle")
     add_custom_command(
