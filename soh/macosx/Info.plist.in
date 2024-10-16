@@ -39,6 +39,8 @@
         <string>~/Library/Application Support/com.shipofharkinian.soh</string>
         <key>DYLD_LIBRARY_PATH</key>
         <string>@executable_path/../Frameworks</string>
+        <key>RESPATH</key>
+        <string>@executable_path/../Resources</string>
     </dict>
     <key>LSArchitecturePriority</key>
     <array>
