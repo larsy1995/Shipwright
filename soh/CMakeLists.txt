@@ -277,11 +277,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 		)
 	endif()
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
-        OUTPUT_NAME "soh"
-    )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "soh.elf"
@@ -757,7 +752,6 @@ execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/soh-macos.sh.in ${CMAKE_BINARY_DIR}/macosx/soh-macos.sh @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.otr DESTINATION ../Resources COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
