@@ -756,19 +756,12 @@ find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download fi
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/Info.plist.in ${CMAKE_BINARY_DIR}/macosx/Info.plist @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/soh-macos.sh.in ${CMAKE_BINARY_DIR}/macosx/soh-macos.sh @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.otr DESTINATION ../Resources COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
-
-# Custom command to delete soh-macos after packaging
-add_custom_command(
-    TARGET soh POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_INSTALL_PREFIX}/../Resources/soh-macos
-    COMMENT "Deleting soh-macos after packaging"
-)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
