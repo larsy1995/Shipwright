@@ -258,7 +258,7 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
 install(CODE "
     include(BundleUtilities)
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
-    file(REMOVE_RECURSE \"\${CMAKE_INSTALL_PREFIX}/soh/soh-macos\")
+    file(REMOVE_RECURSE \"${CMAKE_INSTALL_PREFIX}/../Resources/soh-macos\")
     ")
 
 endif()
