@@ -219,14 +219,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     endif()
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    # This sets the output name to "soh-macos" but keeps the target as "soh"
-    set_target_properties(soh PROPERTIES OUTPUT_NAME "soh-macos")
-
-    # Skip installation of the "soh-macos" executable
-    install(TARGETS soh EXCLUDE_FROM_ALL)
-endif()
-
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 add_custom_target(CreateOSXIcons
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/macosx/soh.iconset
@@ -262,6 +254,7 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         PATTERN ZAPD.out
         PERMISSIONS ${PROGRAM_PERMISSIONS_EXECUTE}
         )
+install(TARGETS soh EXCLUDE_FROM_ALL)
 
 install(CODE "
     include(BundleUtilities)
