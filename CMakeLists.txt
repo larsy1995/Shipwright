@@ -219,6 +219,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     endif()
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    # Skip installation of soh-macos
+    install(TARGETS soh-macos EXCLUDE_FROM_ALL)
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 add_custom_target(CreateOSXIcons
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/macosx/soh.iconset
@@ -257,10 +262,9 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
 
 install(CODE "
     include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\" EXCLUDE_PATTERNS \"soh-macos\")
     ")
-    # Skip installation of soh-macos
-    install(TARGETS ${PROJECT_NAME} EXCLUDE_FROM_ALL)
+
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
