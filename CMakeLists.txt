@@ -220,8 +220,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    # Skip installation of soh-macos
-    install(TARGETS soh-macos EXCLUDE_FROM_ALL)
+    # This sets the output name to "soh-macos" but keeps the target as "soh"
+    set_target_properties(soh PROPERTIES OUTPUT_NAME "soh-macos")
+
+    # Skip installation of the "soh-macos" executable
+    install(TARGETS soh EXCLUDE_FROM_ALL)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
