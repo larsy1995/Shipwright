@@ -261,12 +261,6 @@ install(CODE "
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\" EXCLUDE_PATTERNS \"soh-macos\")
     ")
 
-    add_custom_command(
-        TARGET soh
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/soh-macos
-        COMMENT "Removing soh-macos from the final build directory"
-    )
 
 endif()
 
