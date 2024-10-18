@@ -254,14 +254,12 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         PATTERN ZAPD.out
         PERMISSIONS ${PROGRAM_PERMISSIONS_EXECUTE}
         )
-install(TARGETS soh EXCLUDE_FROM_ALL)
 
 install(CODE "
     include(BundleUtilities)
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
     execute_process(COMMAND rm -f \"\${CMAKE_INSTALL_PREFIX}/soh-macos\")
     ")
-
 
 endif()
 
