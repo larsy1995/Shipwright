@@ -257,9 +257,10 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
 
 install(CODE "
     include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\" EXCLUDE_PATTERNS \"soh-macos\")
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
     ")
-
+    # Skip installation of soh-macos
+    install(TARGETS ${PROJECT_NAME} EXCLUDE_FROM_ALL)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
