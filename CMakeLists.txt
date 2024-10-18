@@ -258,7 +258,8 @@ install(TARGETS soh EXCLUDE_FROM_ALL)
 
 install(CODE "
     include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\" EXCLUDE_PATTERNS \"soh-macos\")
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
+    execute_process(COMMAND rm -f \"\${CMAKE_INSTALL_PREFIX}/soh-macos\")
     ")
 
 
