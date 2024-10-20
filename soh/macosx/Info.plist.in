@@ -31,6 +31,8 @@
     <string>Copyright 2022 HarbourMasters.</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.games</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
     <key>LSMinimumSystemVersion</key>
     <string>10.15</string>
     <key>LSEnvironment</key>
@@ -39,8 +41,6 @@
         <string>~/Library/Application Support/com.shipofharkinian.soh</string>
         <key>DYLD_LIBRARY_PATH</key>
         <string>@executable_path/../Frameworks</string>
-        <key>RESPATH</key>
-        <string>@executable_path/../Resources</string>
     </dict>
     <key>LSArchitecturePriority</key>
     <array>
