@@ -10,6 +10,8 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
@@ -994,7 +996,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     break;
             }
 
-            func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
+            Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             gSaveContext.cutsceneTrigger = 1;
             func_800F44EC(0x14, 0xA);
             this->actionFunc = EnOwl_WaitDefault;
@@ -1146,7 +1148,7 @@ void EnOwl_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->actor.draw != NULL) {
-        Actor_MoveForward(&this->actor);
+        Actor_MoveXZGravity(&this->actor);
     }
 
     if (this->actionFlags & 2) {

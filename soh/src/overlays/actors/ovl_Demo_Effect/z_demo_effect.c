@@ -10,6 +10,8 @@
 #include "objects/object_efc_tw/object_efc_tw.h"
 #include "objects/object_gi_jewel/object_gi_jewel.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -651,7 +653,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
                     (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
-                    func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
+                    Sfx_PlaySfxCentered2(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
                 }
                 if (this->getItem.drawId != GID_ARROW_LIGHT) {
                     this->actor.shape.rot.y += 0x3E80;
@@ -667,7 +669,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
                     (IS_RANDO && gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_WARP_PAD)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
-                    func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
+                    Sfx_PlaySfxCentered2(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
                 }
                 break;
             case 4:
@@ -945,7 +947,7 @@ void DemoEffect_UpdateLightRingTriforce(DemoEffect* this, PlayState* play) {
 void DemoEffect_UpdateCreationFireball(DemoEffect* this, PlayState* play) {
     DemoEffect* effect;
 
-    Actor_MoveForward(&this->actor);
+    Actor_MoveXZGravity(&this->actor);
     this->actor.speedXZ = this->actor.speedXZ + (this->actor.gravity * 0.5f);
 
     if (this->fireBall.timer != 0) {
@@ -973,7 +975,7 @@ void DemoEffect_UpdateCreationFireball(DemoEffect* this, PlayState* play) {
         Actor_SetScale(&effect->actor, 0.2f);
     }
 
-    func_800788CC(NA_SE_IT_DM_RING_EXPLOSION);
+    Sfx_PlaySfxCentered2(NA_SE_IT_DM_RING_EXPLOSION);
     Actor_Kill(&this->actor);
 }
 
@@ -1862,13 +1864,13 @@ void DemoEffect_DrawGodLgt(Actor* thisx, PlayState* play) {
         if (gSaveContext.entranceIndex == ENTR_CUTSCENE_MAP_0) {
             if (gSaveContext.sceneSetupIndex == 4) {
                 if (play->csCtx.frames <= 680) {
-                    func_80078914(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
+                    Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
                 }
             } else {
-                func_80078914(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
+                Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
             }
         } else {
-            func_80078914(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
+            Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_EV_GOD_FLYING - SFX_FLAG);
         }
 
         gSPSegment(POLY_XLU_DISP++, 8,
@@ -2126,7 +2128,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
                     rg = RG_SHADOW_MEDALLION;
                     break;
                 case DEMO_EFFECT_MEDAL_LIGHT:
-                    rc = RC_GIFT_FROM_SAGES;
+                    rc = RC_GIFT_FROM_RAURU;
                     rg = RG_LIGHT_MEDALLION;
                     break;
                 case DEMO_EFFECT_LIGHTARROW:

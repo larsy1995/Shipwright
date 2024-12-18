@@ -76,6 +76,7 @@ typedef enum {
     VB_MIDO_SPAWN,
     // Opt: *EnMd
     // Vanilla condition: EnMd->interactInfo.talkState == NPC_TALK_STATE_ACTION
+    // Note: When overriding this, ensure you're not in the intro cutscene as Mido's path has not been loaded
     VB_MOVE_MIDO_IN_KOKIRI_FOREST,
     // Opt: *EnMd
     // Vanilla condition: CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)
@@ -126,6 +127,7 @@ typedef enum {
     */
     VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW,
     // Opt: *EnGo2
+    VB_GORON_LINK_BE_SCARED,
     // Vanilla condition: CUR_CAPACITY(UPG_BOMB_BAG) >= 20 && this->waypoint > 7 && this->waypoint < 12
     VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD,
     // Vanilla condition: !CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BIGGORON)
@@ -244,6 +246,11 @@ typedef enum {
     ```
     */
     VB_DRAW_AMMO_COUNT,
+    // Opt: *ObjTsubo
+    VB_POT_SETUP_DRAW,
+    VB_POT_DROP_ITEM,
+    // Opt: *ActorDoorShutter
+    VB_LOCK_BOSS_DOOR,
     // Vanilla condition: true
     VB_HAVE_OCARINA_NOTE_D4,
     // Vanilla condition: true
@@ -280,6 +287,9 @@ typedef enum {
     VB_SPAWN_BLUE_WARP,
     // Vanilla condition: this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF
     VB_BLUE_WARP_APPLY_ENTRANCE_AND_CUTSCENE,
+    // Vanilla condition: SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
+    // Opt: int (original next entrance index)
+    VB_SET_VOIDOUT_FROM_SURFACE,
     // Vanilla condition: this->collider.base.acFlags & 2
     VB_BG_BREAKWALL_BREAK,
     // Vanilla condition: true
@@ -293,6 +303,10 @@ typedef enum {
     /*** Play Cutscenes ***/
 
     VB_PLAY_TRANSITION_CS,
+    VB_PLAY_GORON_FREE_CS,
+    VB_PLAY_FIRE_ARROW_CS,
+    // Vanilla condition: INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
+    VB_SPAWN_FIRE_ARROW,
     // Opt: *EventChkInf flag
     VB_PLAY_ENTRANCE_CS,
     // Opt: *cutsceneId
@@ -308,6 +322,8 @@ typedef enum {
     // Vanilla condition: !EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL
     VB_PLAY_PULL_MASTER_SWORD_CS,
     VB_PLAY_DROP_FISH_FOR_JABU_CS,
+    // Opt: *EnKz
+    VB_PLAY_MWEEP_CS,
     // Vanilla condition: player->getItemId == GI_GAUNTLETS_SILVER
     VB_PLAY_NABOORU_CAPTURED_CS,
     VB_PLAY_ZELDAS_LULLABY_CS,
@@ -341,9 +357,24 @@ typedef enum {
     VB_SHOULD_GIVE_VANILLA_FISHING_PRIZE,
     VB_GIVE_RANDO_FISHING_PRIZE,
     VB_PLAY_THROW_ANIMATION,
+    VB_INFLICT_VOID_DAMAGE,
+    // Vanilla condition: Close enough & various cutscene checks
+    // Opt: *EnRu1
+    VB_PLAY_CHILD_RUTO_INTRO,
+    // Vanilla condition: !INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE && in the big okto room
+    // Opt: *EnRu1
+    VB_RUTO_WANT_TO_BE_TOSSED_TO_SAPPHIRE,
+    // Vanilla condition: Landed on the platform in the big okto room
+    // Opt: *EnRu1
+    VB_RUTO_RUN_TO_SAPPHIRE,
+    // Vanilla condition: !Flags_GetInfTable(INFTABLE_145)
+    // Opt: *EnRu1
+    VB_RUTO_BE_CONSIDERED_NOT_KIDNAPPED,
+    
 
     /*** Give Items ***/
 
+    VB_FREEZE_ON_SKULL_TOKEN,
     // Opt: *EnBox
     VB_GIVE_ITEM_FROM_CHEST,
     // Opt: ItemID
@@ -352,7 +383,6 @@ typedef enum {
     VB_GIVE_ITEM_FROM_ITEM_00,
     // Opt: *EnSi
     VB_GIVE_ITEM_SKULL_TOKEN,
-    VB_FREEZE_ON_SKULL_TOKEN,
     // Opt: *EnCow
     VB_GIVE_ITEM_FROM_COW,
     // Opt: *EnDns
@@ -626,8 +656,8 @@ public:
         inline static std::vector<HOOK_ID> hooksForFilter;
     };
 
-    template <typename H> std::unordered_map<uint32_t, HookInfo> GetHookData() {
-        return RegisteredGameHooks<H>::hookData;
+    template <typename H> std::unordered_map<uint32_t, HookInfo>* GetHookData() {
+        return &RegisteredGameHooks<H>::hookData;
     }
 
     // General Hooks

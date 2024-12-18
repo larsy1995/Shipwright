@@ -672,11 +672,8 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
             }
         }
     }
-#ifdef ENABLE_DEBUG
-    auto message = "ERROR: Unable to place priority one-way entrance for " + priorityName + "\n";
-    SPDLOG_DEBUG(message);
-    PlacementLog_Write();
-#endif
+    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for " + priorityName + "\n");
+    assert(false);
     return false;
 }
 
@@ -923,7 +920,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
           { EntranceType::Interior, RR_MARKET_POTION_SHOP,            RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_POTION_SHOP } },
         { { EntranceType::Interior, RR_THE_MARKET,                    RR_MARKET_TREASURE_CHEST_GAME,    ENTR_TREASURE_BOX_SHOP_0 },
           { EntranceType::Interior, RR_MARKET_TREASURE_CHEST_GAME,    RR_THE_MARKET,                    ENTR_MARKET_DAY_OUTSIDE_TREASURE_BOX_SHOP } },
-        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_0 },
+        { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_BOMBCHU_SHOP,           ENTR_BOMBCHU_SHOP_1 },
           { EntranceType::Interior, RR_MARKET_BOMBCHU_SHOP,           RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_BOMBCHU_SHOP } },
         { { EntranceType::Interior, RR_MARKET_BACK_ALLEY,             RR_MARKET_MAN_IN_GREEN_HOUSE,     ENTR_BACK_ALLEY_MAN_IN_GREEN_HOUSE },
           { EntranceType::Interior, RR_MARKET_MAN_IN_GREEN_HOUSE,     RR_MARKET_BACK_ALLEY,             ENTR_BACK_ALLEY_DAY_OUTSIDE_MAN_IN_GREEN_HOUSE } },
@@ -1225,7 +1222,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
             // If forest is closed, ensure Ghoma is inside the Deku tree
             // Deku tree being in its vanilla location is handled below
-            if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
                 !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
                 FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance) {
                     return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
@@ -1241,7 +1238,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
             // If forest is closed, ensure Ghoma is inside the Deku tree
-            if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+            if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
                 !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
                 FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance) {
                     return entrance->GetParentRegionKey() == RR_DEKU_TREE_BOSS_ENTRYWAY &&
@@ -1268,7 +1265,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
                               GetShuffleableEntrances(EntranceType::GanonDungeon));
         }
         // If forest is closed don't allow a forest escape via spirit temple hands
-        if (ctx->GetOption(RSK_FOREST).Is(RO_FOREST_CLOSED) &&
+        if (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) &&
             !(ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES))) {
             FilterAndEraseFromPool(entrancePools[EntranceType::Dungeon], [](const Entrance* entrance) {
                 return entrance->GetParentRegionKey() == RR_KF_OUTSIDE_DEKU_TREE &&
@@ -1333,12 +1330,12 @@ int EntranceShuffler::ShuffleAllEntrances() {
         (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) ? 1 : 0) + (ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES) ? 1 : 0) +
         (ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES) ? 1 : 0);
     if (totalMixedPools < 2) {
-        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
-        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetSelectedIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_BOSS_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
+        ctx->GetOption(RSK_MIX_GROTTO_ENTRANCES).SetContextIndex(RO_GENERIC_OFF);
     }
     if (ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS)) {
         std::set<EntranceType> poolsToMix = {};
