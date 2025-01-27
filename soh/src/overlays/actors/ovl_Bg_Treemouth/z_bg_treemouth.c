@@ -10,7 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgTreemouth_Init(Actor* thisx, PlayState* play);
 void BgTreemouth_Destroy(Actor* thisx, PlayState* play);
@@ -145,9 +145,9 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
         if (!LINK_IS_ADULT) {
             if (Flags_GetEventChkInf(EVENTCHKINF_MET_DEKU_TREE)) {
                 if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x7530)) {
-                    this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+                    this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
                     if (this->dyna.actor.isTargeted) {
-                        this->dyna.actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+                        this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                         play->csCtx.segment = D_808BD2A0;
                         gSaveContext.cutsceneTrigger = 1;
                         BgTreemouth_SetupAction(this, func_808BC9EC);

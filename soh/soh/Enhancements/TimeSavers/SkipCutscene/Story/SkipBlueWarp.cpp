@@ -10,7 +10,7 @@ extern "C" {
 #include "variables.h"
 }
 
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
+#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).GetContextOptionIndex()
 
 static bool sEnteredBlueWarp = false;
 

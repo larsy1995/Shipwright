@@ -2,7 +2,6 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 s16 Top_LM_Margin = 0;
 s16 Left_LM_Margin = 0;
@@ -675,7 +674,7 @@ u32 HealthMeter_IsCritical(void) {
         var = 0x2C;
     }
 
-    if (GameInteractor_Should(VB_HEALTH_METER_BE_CRITICAL, var >= gSaveContext.health && gSaveContext.health > 0)) {
+    if ((var >= gSaveContext.health) && (gSaveContext.health > 0)) {
         return true;
     } else {
         return false;

@@ -376,10 +376,9 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                 if (this->newFileNameCharCount < 0) {
                     this->newFileNameCharCount = 0;
-                    if (this->prevConfigMode == CM_QUEST_MENU) {
+                    if (this->prevConfigMode == CM_QUEST_MENU || this->prevConfigMode == CM_GENERATE_SEED) {
                         this->configMode = CM_NAME_ENTRY_TO_QUEST_MENU;
-                    } else if (this->prevConfigMode == CM_RANDOMIZER_SETTINGS_MENU) {
-                        this->configMode = CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU;
+                        Randomizer_SetSeedGenerated(false);
                     } else {
                         this->configMode = CM_NAME_ENTRY_TO_MAIN;
                     }
@@ -461,6 +460,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             this->prevConfigMode = CM_MAIN_MENU;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
                             CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
+                            Randomizer_SetSeedGenerated(false);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;
                             func_800AA000(300.0f, 0xB4, 0x14, 0x64);

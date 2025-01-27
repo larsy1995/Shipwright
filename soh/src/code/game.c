@@ -255,8 +255,6 @@ void GameState_Update(GameState* gameState) {
 
     GameState_SetFrameBuffer(gfxCtx);
 
-    GameInteractor_ExecuteOnGameStateMainStart();
-
     gameState->main(gameState);
 
     func_800C4344(gameState);

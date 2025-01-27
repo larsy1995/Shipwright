@@ -9,7 +9,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 // type:        (this->dyna.actor.params & 7)
 // subtype:     (this->dyna.actor.params >> 4 & 7)
@@ -313,7 +313,7 @@ void ObjSwitch_Init(Actor* thisx, PlayState* play) {
     }
 
     if (type == OBJSWITCH_TYPE_CRYSTAL_TARGETABLE) {
-        this->dyna.actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+        this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->dyna.actor.targetMode = 4;
     }
 
@@ -390,26 +390,25 @@ void ObjSwitch_FloorUp(ObjSwitch* this, PlayState* play) {
     } else {
         switch ((this->dyna.actor.params >> 4 & 7)) {
             case OBJSWITCH_SUBTYPE_FLOOR_0:
-                if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
+                if (func_8004356C(&this->dyna)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOn(this, play);
                 }
                 break;
             case OBJSWITCH_SUBTYPE_FLOOR_1:
-                if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                    !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+                if ((this->dyna.unk_160 & 2) && !(this->unk_17F & 2)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOn(this, play);
                 }
                 break;
             case OBJSWITCH_SUBTYPE_FLOOR_2:
-                if (DynaPolyActor_IsSwitchPressed(&this->dyna)) {
+                if (func_800435B4(&this->dyna)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOn(this, play);
                 }
                 break;
             case OBJSWITCH_SUBTYPE_FLOOR_3:
-                if (DynaPolyActor_IsSwitchPressed(&this->dyna)) {
+                if (func_800435B4(&this->dyna)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOff(this, play);
                 }
@@ -449,15 +448,14 @@ void ObjSwitch_FloorDown(ObjSwitch* this, PlayState* play) {
             }
             break;
         case OBJSWITCH_SUBTYPE_FLOOR_1:
-            if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+            if ((this->dyna.unk_160 & 2) && !(this->unk_17F & 2)) {
                 ObjSwitch_FloorReleaseInit(this);
                 ObjSwitch_SetOff(this, play);
             }
             break;
         case OBJSWITCH_SUBTYPE_FLOOR_2:
         case OBJSWITCH_SUBTYPE_FLOOR_3:
-            if (!DynaPolyActor_IsSwitchPressed(&this->dyna) && !Player_InCsMode(play)) {
+            if (!func_800435B4(&this->dyna) && !Player_InCsMode(play)) {
                 if (this->releaseTimer <= 0) {
                     ObjSwitch_FloorReleaseInit(this);
                     if ((this->dyna.actor.params >> 4 & 7) == OBJSWITCH_SUBTYPE_FLOOR_2) {
@@ -697,7 +695,7 @@ void ObjSwitch_Update(Actor* thisx, PlayState* play) {
     switch ((this->dyna.actor.params & 7)) {
         case OBJSWITCH_TYPE_FLOOR:
         case OBJSWITCH_TYPE_FLOOR_RUSTY:
-            this->unk_17F = this->dyna.interactFlags;
+            this->unk_17F = this->dyna.unk_160;
             break;
         case OBJSWITCH_TYPE_EYE:
             this->unk_17F = this->tris.col.base.acFlags;

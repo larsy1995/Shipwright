@@ -336,7 +336,7 @@ std::array<std::string, RA_MAX> rcareaPrefixes = {
     "Shadow Temple",
     "Bottom of the Well",
     "Ice Cavern",
-    "Gerudo Training Ground",
+    "Gerudo Training Grounds",
     "Ganon's Castle",
 };
 

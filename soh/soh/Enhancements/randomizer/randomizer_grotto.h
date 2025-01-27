@@ -22,9 +22,6 @@ typedef struct {
     Vec3f pos;
 } GrottoReturnInfo;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 void Grotto_InitExitAndLoadLists(void);
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex);
 void Grotto_SetLoadOverride(s16 originalIndex, s16 overrideIndex);
@@ -36,9 +33,5 @@ void Grotto_ForceGrottoReturn(void);
 void Grotto_ForceRegularVoidOut(void);
 void Grotto_SanitizeEntranceType(void);
 s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
-s8 Grotto_CurrentGrotto();
-#ifdef __cplusplus
-};
-#endif
 
 #endif //_RANDO_GROTTO_H_

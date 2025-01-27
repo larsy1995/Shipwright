@@ -83,7 +83,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
 
     // Prefer the highest between world position and focus position if targetable
     float posY = nameTag->actor->world.pos.y;
-    if (nameTag->actor->flags & ACTOR_FLAG_ATTENTION_ENABLED) {
+    if (nameTag->actor->flags & ACTOR_FLAG_TARGETABLE) {
         posY = std::max(posY, nameTag->actor->focus.pos.y);
     }
 

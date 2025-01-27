@@ -60,10 +60,10 @@ void func_80043334(CollisionContext* colCtx, Actor* actor, s32 bgId) {
     if (DynaPoly_IsBgIdBgActor(bgId)) {
         DynaPolyActor* dynaActor = DynaPoly_GetActor(colCtx, bgId);
         if (dynaActor != NULL) {
-            DynaPolyActor_SetActorOnTop(dynaActor);
+            func_800434A8(dynaActor);
 
-            if (CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_CAN_PRESS_SWITCHES)) {
-                DynaPolyActor_SetSwitchPressed(dynaActor);
+            if (CHECK_FLAG_ALL(actor->flags, ACTOR_FLAG_CAN_PRESS_SWITCH)) {
+                func_80043538(dynaActor);
             }
         }
     }
@@ -91,12 +91,12 @@ s32 func_800433A4(CollisionContext* colCtx, s32 bgId, Actor* actor) {
         return false;
     }
 
-    if (dynaActor->transformFlags & 1) {
+    if (dynaActor->unk_15C & 1) {
         func_800430A0(colCtx, bgId, actor);
         result = true;
     }
 
-    if (dynaActor->transformFlags & 2) {
+    if (dynaActor->unk_15C & 2) {
         func_800432A0(colCtx, bgId, actor);
         result = true;
     }

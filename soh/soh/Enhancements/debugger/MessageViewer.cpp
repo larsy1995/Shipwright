@@ -174,13 +174,15 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
     PlayState* play = gPlayState;
     static int16_t messageStaticIndices[] = { 0, 1, 3, 2 };
     const auto player = GET_PLAYER(gPlayState);
-    player->actor.flags |= ACTOR_FLAG_TALK;
+    player->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
     MessageContext* msgCtx = &play->msgCtx;
     msgCtx->ocarinaAction = 0xFFFF;
     Font* font = &msgCtx->font;
     sMessageHasSetSfx = 0;
     for (u32 i = 0; i < FONT_CHAR_TEX_SIZE * 120; i += FONT_CHAR_TEX_SIZE) {
-        gSPInvalidateTexCache(play->state.gfxCtx->polyOpa.p++, reinterpret_cast<uintptr_t>(&font->charTexBuf[i]));
+        if (&font->charTexBuf[i] != nullptr) {
+            gSPInvalidateTexCache(play->state.gfxCtx->polyOpa.p++, reinterpret_cast<uintptr_t>(&font->charTexBuf[i]));
+        }
     }
     R_TEXT_CHAR_SCALE = 75;
     R_TEXT_LINE_SPACING = 12;

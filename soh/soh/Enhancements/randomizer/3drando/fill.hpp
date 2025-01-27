@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../randomizerTypes.h"
-#include "../location_access.h"
+#include "location_access.hpp"
 #include "../entrance.h"
 
 #include <vector>

@@ -2,24 +2,12 @@
 
 // MARK: - Gameplay
 
-void GameInteractor_ExecuteOnZTitleInit(void* gameState) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZTitleInit>(gameState);
-}
-
-void GameInteractor_ExecuteOnZTitleUpdate(void* gameState) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnZTitleUpdate>(gameState);
-}
-
 void GameInteractor_ExecuteOnLoadGame(int32_t fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadGame>(fileNum);
 }
 
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnExitGame>(fileNum);
-}
-
-void GameInteractor_ExecuteOnGameStateMainStart() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGameStateMainStart>();
 }
 
 void GameInteractor_ExecuteOnGameFrameUpdate() {

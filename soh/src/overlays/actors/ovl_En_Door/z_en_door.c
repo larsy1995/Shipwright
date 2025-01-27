@@ -11,9 +11,8 @@
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define DOOR_AJAR_SLAM_RANGE 120.0f
 #define DOOR_AJAR_OPEN_RANGE (2 * DOOR_AJAR_SLAM_RANGE)
@@ -154,7 +153,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
 
     if (Object_IsLoaded(&play->objectCtx, this->requiredObjBankIndex)) {
         doorType = this->actor.params >> 7 & 7;
-        this->actor.flags &= ~ACTOR_FLAG_UPDATE_CULLING_DISABLED;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actor.objBankIndex = this->requiredObjBankIndex;
         this->actionFunc = EnDoor_Idle;
         if (doorType == DOOR_EVENING) {
@@ -163,7 +162,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
         }
         this->actor.world.rot.y = 0x0000;
         if (doorType == DOOR_LOCKED) {
-            if (GameInteractor_Should(VB_DOOR_BE_LOCKED, !Flags_GetSwitch(play, this->actor.params & 0x3F), this)) {
+            if (!Flags_GetSwitch(play, this->actor.params & 0x3F)) {
                 this->lockTimer = 10;
             }
         } else if (doorType == DOOR_AJAR) {
@@ -181,7 +180,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
                 doorType = DOOR_SCENEEXIT;
             } else {
                 this->actionFunc = EnDoor_WaitForCheck;
-                this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_LOCK_ON_DISABLED;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON;
             }
         }
         // Replace the door type it was loaded with by the new type
@@ -202,10 +201,8 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
         Animation_PlayOnceSetSpeed(&this->skelAnime, D_809FCECC[this->animStyle],
                                    (player->stateFlags1 & PLAYER_STATE1_IN_WATER) ? 0.75f : 1.5f);
         if (this->lockTimer != 0) {
-            if (GameInteractor_Should(VB_CONSUME_SMALL_KEY, true, this)) {
-                gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
-                Flags_SetSwitch(play, this->actor.params & 0x3F);
-            }
+            gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
+            Flags_SetSwitch(play, this->actor.params & 0x3F);
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
         }
     } else if (!Player_InCsMode(play)) {
@@ -217,7 +214,7 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
             }
             if (ABS(phi_v0) < 0x3000) {
                 if (this->lockTimer != 0) {
-                    if (GameInteractor_Should(VB_NOT_HAVE_SMALL_KEY, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0, this)) {
+                    if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] <= 0) {
                         Player* player2 = GET_PLAYER(play);
 
                         player2->naviTextId = -0x203;

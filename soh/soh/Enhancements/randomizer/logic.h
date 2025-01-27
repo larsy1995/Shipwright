@@ -65,10 +65,7 @@ class Logic {
     // Bottle Count
     uint8_t Bottles = 0;
     uint8_t NumBottles = 0;
-    //this event covers if the player can currently empty big poes in logic
-    bool CanEmptyBigPoes = false;
-    //this check covers if the generation has confirmed that it's possible to empty big poes if needed as adult
-    bool CouldEmptyBigPoes = true;
+    bool CanEmptyBigPoes = true;
 
     // Drops and Bottle Contents Access
     bool NutPot = false;
@@ -186,7 +183,6 @@ class Logic {
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
     bool HasBossSoul(RandomizerGet itemName);
-    bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmount);
     bool SmallKeys(RandomizerRegion dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
     bool CanDoGlitch(GlitchType glitch);

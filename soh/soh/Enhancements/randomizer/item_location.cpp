@@ -56,7 +56,6 @@ void ItemLocation::SetParentRegion(const RandomizerRegion region) {
     parentRegion = region;
 }
 
-//RANDOTODO only used in tracker now, could possibly be removed
 RandomizerRegion ItemLocation::GetParentRegionKey() const {
     return parentRegion;
 }
@@ -178,15 +177,34 @@ void ItemLocation::SetHidden(const bool hidden_) {
 }
 
 bool ItemLocation::IsExcluded() {
-    return excludedOption.Is(RO_LOCATION_EXCLUDE);
+    return excludedOption.GetContextOptionIndex();
 }
 
-OptionValue& ItemLocation::GetExcludedOption() {
-    return excludedOption;
+Option* ItemLocation::GetExcludedOption() {
+    return &excludedOption;
 }
 
-void ItemLocation::SetExcludedOption(uint8_t val) {
-    excludedOption.Set(val);
+void ItemLocation::AddExcludeOption() {
+    if (const std::string name = StaticData::GetLocation(rc)->GetName(); name.length() < 23) {
+        excludedOption = Option::Bool(name, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
+    } else {
+        const size_t lastSpace = name.rfind(' ', 23);
+        std::string settingText = name;
+        settingText.replace(lastSpace, 1, "\n ");
+
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, OptionCategory::Setting, "", "", WidgetType::Checkbox, RO_LOCATION_INCLUDE);
+    }
+    // RANDOTODO: this without string compares and loops
+    bool alreadyAdded = false;
+    const Location* loc = StaticData::GetLocation(rc);
+    for (Option* location : Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea())) {
+        if (location->GetName() == excludedOption.GetName()) {
+            alreadyAdded = true;
+        }
+    }
+    if (!alreadyAdded) {
+        Context::GetInstance()->GetSettings()->GetExcludeOptionsForArea(loc->GetArea()).push_back(&excludedOption);
+    }
 }
 
 bool ItemLocation::IsVisible() const {

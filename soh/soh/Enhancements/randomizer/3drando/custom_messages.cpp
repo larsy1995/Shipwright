@@ -29,7 +29,7 @@ constexpr std::array EnglishDungeonNames = {
     "Bottom of the Well",
     "Ice Cavern",
     "Ganon's Tower",
-    "Gerudo Training Ground",
+    "Gerudo Training Grounds",
     "Gerudo Fortress",
     "Ganon's Castle",
 };
