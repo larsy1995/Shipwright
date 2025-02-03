@@ -32,8 +32,6 @@
 	<string>public.app-category.games</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.15</string>
-	<key>NSHighResolutionCapable</key>
-	<false/>
 	<key>LSEnvironment</key>
 	<dict>
 		<key>SHIP_HOME</key>
